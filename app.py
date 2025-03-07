@@ -6,6 +6,23 @@ import numpy as np
 import tensorflow as tf
 import streamlit as st
 
+import gdown
+
+
+# Google Drive file ID
+file_id = "1rKh-IElSdHTqax7XdfSdZTn-r8T_qWPf"
+model_url = f"https://drive.google.com/uc?id={file_id}"
+model_path = "plant_disease_prediction_model.h5"
+
+# Download the model if it does not exist
+if not os.path.exists(model_path):
+    print("Downloading model from Google Drive...")
+    gdown.download(model_url, model_path, quiet=False)
+
+# Load the model
+model = tf.keras.models.load_model(model_path)
+print("Model loaded successfully!")
+
 
 working_dir = os.path.dirname(os.path.abspath(__file__))
 model_path = f"{working_dir}/plant_disease_prediction_model.h5"
