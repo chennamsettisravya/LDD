@@ -8,11 +8,11 @@ import streamlit as st
 
 import gdown
 
-
 # Google Drive file ID
-file_id = "1rKh-IElSdHTqax7XdfSdZTn-r8T_qWPf"
+file_id = "13-XajoG4rxQ7quhVZrCpG-hb1LWLGs4x"
 model_url = f"https://drive.google.com/uc?id={file_id}"
 model_path = "plant_disease_prediction_model.h5"
+
 
 # Download the model if it does not exist
 if not os.path.exists(model_path):
