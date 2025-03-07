@@ -9,26 +9,25 @@ import streamlit as st
 import gdown
 
 
-# 🔹 GitHub raw link of your model
+import subprocess
+
+# 🔹 Raw GitHub link to your model
 MODEL_URL = "https://raw.githubusercontent.com/chennamsettisravya/LDD/main/mobile_net_new.h5"
 MODEL_PATH = "mobile_net_new.h5"
 
-# 🔹 Function to download model from GitHub
-@st.cache_resource  # Cache the model to avoid re-downloading
-def load_model():
+# 🔹 Function to download model using wget
+@st.cache_resource  # Cache to avoid re-downloading
+def download_model():
     if not os.path.exists(MODEL_PATH):
         st.info("📥 Downloading model... Please wait.")
-        response = requests.get(MODEL_URL, stream=True)
-        if response.status_code == 200:
-            with open(MODEL_PATH, "wb") as f:
-                for chunk in response.iter_content(1024):
-                    f.write(chunk)
+        try:
+            subprocess.run(["wget", MODEL_URL, "-O", MODEL_PATH], check=True)
             st.success("✅ Model downloaded successfully!")
-        else:
-            st.error(f"❌ Failed to download model: {response.status_code}")
+        except subprocess.CalledProcessError:
+            st.error("❌ Failed to download model.")
             return None
-    st.info("🛠️ Loading the model...")
     return tf.keras.models.load_model(MODEL_PATH)
+
 
 # 🔹 Load the model
 model = load_model()
