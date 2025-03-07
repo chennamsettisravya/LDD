@@ -8,10 +8,30 @@ import streamlit as st
 
 import gdown
 
-working_dir = os.path.dirname(os.path.abspath(__file__))
-model_path = f"{working_dir}/mobile_net_new.h5"
-# Load the pre-trained model
-model = tf.keras.models.load_model(model_path)
+
+# 🔹 GitHub raw link of your model
+MODEL_URL = "https://raw.githubusercontent.com/chennamsettisravya/LDD/main/mobile_net_new.h5"
+MODEL_PATH = "mobile_net_new.h5"
+
+# 🔹 Function to download model from GitHub
+@st.cache_resource  # Cache the model to avoid re-downloading
+def load_model():
+    if not os.path.exists(MODEL_PATH):
+        st.info("📥 Downloading model... Please wait.")
+        response = requests.get(MODEL_URL, stream=True)
+        if response.status_code == 200:
+            with open(MODEL_PATH, "wb") as f:
+                for chunk in response.iter_content(1024):
+                    f.write(chunk)
+            st.success("✅ Model downloaded successfully!")
+        else:
+            st.error(f"❌ Failed to download model: {response.status_code}")
+            return None
+    st.info("🛠️ Loading the model...")
+    return tf.keras.models.load_model(MODEL_PATH)
+
+# 🔹 Load the model
+model = load_model()
 
 
 
