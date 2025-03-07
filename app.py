@@ -30,7 +30,7 @@ def download_model():
 
 
 # 🔹 Load the model
-model = load_model()
+model = download_model()
 
 
 
