@@ -34,11 +34,24 @@ model = download_model()
 
 
 
+import json
+import requests
+
+# 🔹 GitHub Raw URL for class_indices.json
+JSON_URL = "https://raw.githubusercontent.com/chennamsettisravya/LDD/main/class_indices.json"
+
+# 🔹 Download and Load JSON Directly
+try:
+    response = requests.get(JSON_URL)
+    response.raise_for_status()  # Check if the request was successful
+    class_indices = response.json()  # Load JSON content
+    print("✅ JSON loaded successfully!")
+except requests.exceptions.RequestException as e:
+    print(f"❌ Failed to fetch JSON: {e}")
+except json.JSONDecodeError:
+    print("❌ Error decoding JSON")
 
 
-
-# loading the class names
-class_indices = json.load(open(f"{working_dir}/class_indices.json"))
 
 
 # Function to Load and Preprocess the Image using Pillow
